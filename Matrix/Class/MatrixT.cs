@@ -59,9 +59,9 @@ namespace Matrix.Class
             }
             else
             {
-                for (int i = 0; i < third.matrix.GetLength(0); i++)
+                for (int i = 0; i < third.Row; i++)
                 {
-                    for (int j = 0; j < third.matrix.GetLength(1); j++)
+                    for (int j = 0; j < third.Col; j++)
                     {
                         third[i, j] = (dynamic)first[i, j] + (dynamic)second[i, j];
                     }
@@ -81,9 +81,9 @@ namespace Matrix.Class
             }
             else
             {
-                for (int i = 0; i < third.matrix.GetLength(0); i++)
+                for (int i = 0; i < third.Row; i++)
                 {
-                    for (int j = 0; j < third.matrix.GetLength(1); j++)
+                    for (int j = 0; j < third.Col; j++)
                     {
                         third[i, j] = (dynamic)first[i, j] - (dynamic)second[i, j];
                     }
@@ -95,19 +95,22 @@ namespace Matrix.Class
         // * Operator
         public static Matrix<T> operator *(Matrix<T> first, Matrix<T> second)
         {
-            Matrix<T> third = new Matrix<T>(first.Row, first.Col);
+            Matrix<T> third = new Matrix<T>(first.Row, second.Col);
 
-            if (first.Row != second.Row || first.Col != second.Col)
+            if (first.Row != second.Col || first.Col != second.Row)
             {
                 throw new InvalidOperationException("The size of the matrices are different!");
             }
             else
             {
-                for (int i = 0; i < third.Row; i++)
+                for (int i = 0; i < first.Row; i++)
                 {
-                    for (int j = 0; j < third.matrix.GetLength(1); j++)
+                    for (int j = 0; j < second.Col; j++)
                     {
-                        third[i, j] = (dynamic)first[i, j] * (dynamic)second[i, j];
+                        for (int k = 0; k < first.Col; k++)
+                        {
+                            third[i, j] += (dynamic)first[i, k] * (dynamic)second[k, j];
+                        }
                     }
                 }
             }
@@ -118,9 +121,9 @@ namespace Matrix.Class
         public static bool operator true(Matrix<T> Matrix)
         {
             int count = 0;
-            for (int i = 0; i < Matrix.matrix.GetLength(0); i++)
+            for (int i = 0; i < Matrix.Row; i++)
             {
-                for (int j = 0; j < Matrix.matrix.GetLength(1); j++)
+                for (int j = 0; j < Matrix.Col; j++)
                 {
                     if (Matrix[i, j] == (dynamic)0)
                     {
@@ -134,9 +137,9 @@ namespace Matrix.Class
         public static bool operator false(Matrix<T> Matrix)
         {
             int count = 0;
-            for (int i = 0; i < Matrix.matrix.GetLength(0); i++)
+            for (int i = 0; i < Matrix.Row; i++)
             {
-                for (int j = 0; j < Matrix.matrix.GetLength(1); j++)
+                for (int j = 0; j < Matrix.Col; j++)
                 {
                     if (Matrix[i, j] == (dynamic)0)
                     {
@@ -148,7 +151,18 @@ namespace Matrix.Class
             else return false; // fals, nu sunt elemente de 0
         }
 
-
-
+        public void Print()
+        {
+            for (int i = 0; i < matrix.GetLength(0); i++)
+            {
+                Console.Write("Row ({0}): ", i);
+                for (int j = 0; j < matrix.GetLength(1); j++)
+                {
+                    Console.Write(matrix[i, j] + " ");
+                }
+                Console.WriteLine();
+            }
+            Console.WriteLine();
+        }
     }
 }

@@ -8,14 +8,14 @@ using System.Threading.Tasks;
 namespace Generics.Classes
 {
     //        Problem 1. Generic class    //
-    public class GenericList<T> : IEnumerable  where T : IComparable<T>
+    public class GenericList<T> : IEnumerable<T> where T : IComparable<T>
     {
         //Prop
         public int Capacity { get; private set; }
         public int Count { get; private set; }
         private T[] genericList { get; set; }
 
-        // Constructors
+        // Constructor
         public GenericList(int capacity) // class constructor with fixed p_capacity
         {
             this.Capacity = capacity;
@@ -108,6 +108,7 @@ namespace Generics.Classes
         // ToString()
         public override string ToString()
         {
+            Console.Write("Elementele sirului sunt: ");
             StringBuilder sb = new StringBuilder();
             foreach (var element in genericList)
             {
@@ -142,7 +143,7 @@ namespace Generics.Classes
 
 
         //       Problem 3. Min and Max       //
-        public T Min<T>() 
+        public T Min<T>()
         {
             dynamic min = genericList[0];
             for (int i = 0; i < genericList.Length; i++)
@@ -155,7 +156,7 @@ namespace Generics.Classes
             return min;
         }
 
-        public T Max<T>() where T: struct
+        public T Max<T>()
         {
             dynamic max = genericList[0];
             for (int i = 0; i < genericList.Length; i++)
@@ -178,6 +179,7 @@ namespace Generics.Classes
             Console.WriteLine();
         }
 
+        // Am revolvat o eroare la Min si Max folosind IEnumerable
         public IEnumerator<T> GetEnumerator()
         {
             for (int i = 0; i < Count; i++)
